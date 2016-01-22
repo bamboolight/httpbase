@@ -25,6 +25,7 @@ public class CacheFactory {
             return Resources.toString(new URL(key), StandardCharsets.UTF_8);
         }
     };
+    private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
 
     public static LoadingCache<String, String> getDefaultCache() {
 
@@ -36,7 +37,7 @@ public class CacheFactory {
             }
         }
 
-        return entity.getSingletonCache(DEFAULT_CACHE_LOADER, DEFAULT_MAX_CACHE_SIZE, DEFAULT_EXPIRE_DURATION, TimeUnit.SECONDS);
+        return entity.getSingletonCache(DEFAULT_CACHE_LOADER, DEFAULT_MAX_CACHE_SIZE, DEFAULT_EXPIRE_DURATION, DEFAULT_TIME_UNIT);
     }
 
 

@@ -43,6 +43,4 @@ public class HttpBaseTest {
         base.submit("www.baidu.com/", "abs");
         System.out.println(base.get("www.baidu.com/", "abs"));
     }
-
-
 }
