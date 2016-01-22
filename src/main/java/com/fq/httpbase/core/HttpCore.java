@@ -1,18 +1,14 @@
 package com.fq.httpbase.core;
 
-import com.fq.httpbase.exception.HttpBaseException;
-import com.fq.httpbase.factory.ThreadPoolFactory;
 import com.fq.httpbase.processer.ResponseProcessor;
-import com.fq.httpbase.request.RequestMethod;
-import com.fq.httpbase.util.StringUtil;
-import com.fq.httpbase.util.URLUtil;
+import com.fq.httpbase.request.AbstractRequestMethod;
 import com.google.common.cache.LoadingCache;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * HttpBase项目的核心功能(负责向线程池提交请求任务, 和从缓存中读取任务值)
+ *
  * @param <Value>  存入缓存的值类型
  * @param <Output> 处理完url返回值得到的类型
  * @author jifang
@@ -20,26 +16,21 @@ import java.util.concurrent.ExecutorService;
  */
 public class HttpCore<Value, Output> {
 
-    private static ExecutorService threadPool = ThreadPoolFactory.getThreadPool();
+    private ExecutorService threadPool;
+
     private LoadingCache<String, Value> cache;
 
-    public HttpCore(LoadingCache<String, Value> cache) {
+    public HttpCore(ExecutorService threadPool, LoadingCache<String, Value> cache) {
+        this.threadPool = threadPool;
         this.cache = cache;
     }
 
-    public synchronized Output get(String url, String encodedPart, String charset, ResponseProcessor<Value, Output> processor) {
-        try {
-            StringBuilder sb = new StringBuilder(URLUtil.urlAdapter(url));
-            if (StringUtil.isNoneBlank(encodedPart, charset)) {
-                sb.append(URLEncoder.encode(encodedPart, charset));
-            }
-            return processor.handle(cache.getUnchecked(sb.toString()));
-        } catch (UnsupportedEncodingException e) {
-            throw new HttpBaseException(e);
-        }
+    public synchronized Output get(String url, ResponseProcessor<Value, Output> processor) {
+        return processor.handle(cache.getUnchecked(url));
     }
 
-    public void submit(RequestMethod<Value> request) {
+    public synchronized void submit(AbstractRequestMethod<Value> request) {
+        request.setCache(this.cache);
         threadPool.submit(request);
     }
 }

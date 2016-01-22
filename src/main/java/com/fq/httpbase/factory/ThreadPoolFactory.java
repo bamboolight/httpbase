@@ -14,7 +14,7 @@ public class ThreadPoolFactory {
     private static final BlockingQueue<Runnable> DEFAULT_BLOCKING_QUEUE
             = new ArrayBlockingQueue<>(DEFAULT_CORE_POOL_SIZE);
 
-    public static ExecutorService getThreadPool() {
+    public static ExecutorService getDefaultPool() {
         return new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE,
                 DEFAULT_ALIVE_TIME, TimeUnit.SECONDS, DEFAULT_BLOCKING_QUEUE);
     }

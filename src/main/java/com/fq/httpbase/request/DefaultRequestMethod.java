@@ -12,10 +12,10 @@ import java.nio.charset.StandardCharsets;
  * @author jifang
  * @since 16/1/21下午11:05.
  */
-public class DefaultRequestMethod extends RequestMethod<String> {
+public class DefaultRequestMethod extends AbstractRequestMethod<String> {
 
-    public DefaultRequestMethod(String url, LoadingCache<String, String> cache) {
-        super(url, cache);
+    public DefaultRequestMethod(String url) {
+        super(url);
     }
 
     @Override

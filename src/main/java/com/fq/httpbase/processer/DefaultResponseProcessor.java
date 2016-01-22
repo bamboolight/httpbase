@@ -6,10 +6,10 @@ import com.fq.httpbase.exception.HttpBaseException;
  * @author jifang
  * @since 16/1/22下午2:35.
  */
-public class DefaultResponseProcessor implements ResponseProcessor<String, String> {
-    
+public class DefaultResponseProcessor<Output> implements ResponseProcessor<String, Output> {
+
     @Override
-    public String handle(String s) throws HttpBaseException {
-        return s;
+    public Output handle(String s) throws HttpBaseException {
+        return null;
     }
 }

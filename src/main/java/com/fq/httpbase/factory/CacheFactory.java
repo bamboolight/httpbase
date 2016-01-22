@@ -40,15 +40,15 @@ public class CacheFactory {
     }
 
 
-    public static class FactoryEntity<T> {
+    public static class FactoryEntity<Value> {
 
         /**
          * 以String(url)作为缓存的key
-         * T(默认是String)作为缓存的value
+         * Value(默认是String)作为缓存的value
          */
-        private LoadingCache<String, T> cache;
+        private LoadingCache<String, Value> cache;
 
-        public LoadingCache<String, T> getSingletonCache(CacheLoader<String, T> loader, long size, long duration, TimeUnit unit) {
+        public LoadingCache<String, Value> getSingletonCache(CacheLoader<String, Value> loader, long size, long duration, TimeUnit unit) {
             if (cache == null) {
                 synchronized (this) {
                     if (cache == null) {
